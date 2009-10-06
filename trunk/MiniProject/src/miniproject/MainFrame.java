@@ -9,12 +9,10 @@ import javax.swing.*;
  *
  * @author Christopher
  */
-public class GUI {
-    public static void main(String[] args)
+public class MainFrame extends JFrame {
+    public void MainFrame()
     {
-        JFrame mainFrame = new JFrame("MiniProject");
-        mainFrame.show();
-        mainFrame.setLayout(null);
+        this.setLayout(null);
 
         // Implemented to either initially execute or stop events
         JButton btnExecute = new JButton("Execute");
