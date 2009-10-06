@@ -15,7 +15,16 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        PriorityQueue awesomeQueue = new PriorityQueue();
+
+        for (int i=0; i<24; i+=4) {
+            PriorityItem item = new PriorityItem(String.valueOf(i), i);
+            awesomeQueue.enqueue(item);
+        }
+
+        awesomeQueue.enqueue(new PriorityItem("SEVEN", 7));
+        awesomeQueue.enqueue(new PriorityItem("ONE", 1));
+        awesomeQueue.printList();
     }
 
 }
