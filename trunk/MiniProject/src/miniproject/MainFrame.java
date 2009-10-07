@@ -32,6 +32,7 @@ public class MainFrame extends JFrame {
         this.addActions();
         this.pack();
         this.setLocationRelativeTo(null);
+        _executeButton.requestFocus();
     }
 
     private void addActions() {
