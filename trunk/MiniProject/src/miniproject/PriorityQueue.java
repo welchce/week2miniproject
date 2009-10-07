@@ -12,6 +12,7 @@ import java.util.ArrayList;
  */
 public class PriorityQueue {
     ArrayList<PriorityItem> _items = new ArrayList();
+
     public PriorityQueue() { }
     public void enqueue(PriorityItem item) {
         _items.add(item);
