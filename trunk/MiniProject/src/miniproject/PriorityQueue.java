@@ -9,6 +9,7 @@ import java.util.ArrayList;
 /**
  *
  * @author Raymond Cox <rj.cox101 at gmail.com>
+ * @author Ryan Cummins
  */
 public class PriorityQueue {
     ArrayList<PriorityItem> _items = new ArrayList();
@@ -17,7 +18,6 @@ public class PriorityQueue {
     public void enqueue(PriorityItem item) {
         _items.add(item);
         bubbleUp(item);
-        //printList();
     }
 
     public void printList() {
@@ -30,21 +30,17 @@ public class PriorityQueue {
     private void bubbleDown(PriorityItem item) {
         int child1 = _items.indexOf(item)*2+1;
         int child2 = _items.indexOf(item)*2+2;
-        //if (_items.contains(_items.get(child1)) && _items.contains(_items.get(child2))) {
         if (child1 < _items.size() && child1 >= 0 && child2 < _items.size() && child2 >= 0) {
             if (_items.get(child1).getPriority() < _items.get(child2).getPriority()) {
                 if (_items.get(child1).getPriority() < item.getPriority()) {
                     swap(_items.get(child1), item);
                     bubbleDown(item);
                 }
-            } else {
-                if (_items.get(child2).getPriority() < item.getPriority()) {
+            } else if (_items.get(child2).getPriority() < item.getPriority()) {
                     swap(_items.get(child1), item);
                     bubbleDown(item);
                 }
-            }
-        } //else if  (_items.contains(_items.get(child1))) {
-        else if (child1 < _items.size() && child1 >= 0) {
+        } else if (child1 < _items.size() && child1 >= 0) {
              if (_items.get(child1).getPriority() < item.getPriority()) {
                     swap(_items.get(child1), item);
                     bubbleDown(item);
