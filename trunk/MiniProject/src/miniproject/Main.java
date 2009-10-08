@@ -22,17 +22,6 @@ public class Main {
                 mainFrame.setVisible(true);
             }
         });
-
-        PriorityQueue awesomeQueue = new PriorityQueue();
-
-        for (int i=0; i<24; i+=4) {
-            PriorityItem item = new PriorityItem(String.valueOf(i), i);
-            awesomeQueue.enqueue(item);
-        }
-
-        awesomeQueue.enqueue(new PriorityItem("SEVEN", 7));
-        awesomeQueue.enqueue(new PriorityItem("ONE", 1));
-        awesomeQueue.printList();
     }
 
 }

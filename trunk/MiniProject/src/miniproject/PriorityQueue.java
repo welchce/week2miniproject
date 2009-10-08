@@ -22,7 +22,7 @@ public class PriorityQueue {
 
     public void printList() {
         for (PriorityItem item : _items) {
-            System.out.println("Item:" + item.getItem().toString() + " Priority: " +
+            System.out.println("Item:" + String.valueOf(item.getItem()) + " Priority: " +
                                 String.valueOf(item.getPriority()));
         }
     }
@@ -30,7 +30,8 @@ public class PriorityQueue {
     private void bubbleDown(PriorityItem item) {
         int child1 = _items.indexOf(item)*2+1;
         int child2 = _items.indexOf(item)*2+2;
-        if (_items.contains(_items.get(child1)) && _items.contains(_items.get(child2))) {
+        //if (_items.contains(_items.get(child1)) && _items.contains(_items.get(child2))) {
+        if (child1 < _items.size() && child1 >= 0 && child2 < _items.size() && child2 >= 0) {
             if (_items.get(child1).getPriority() < _items.get(child2).getPriority()) {
                 if (_items.get(child1).getPriority() < item.getPriority()) {
                     swap(_items.get(child1), item);
@@ -42,7 +43,8 @@ public class PriorityQueue {
                     bubbleDown(item);
                 }
             }
-        } else if  (_items.contains(_items.get(child1))) {
+        } //else if  (_items.contains(_items.get(child1))) {
+        else if (child1 < _items.size() && child1 >= 0) {
              if (_items.get(child1).getPriority() < item.getPriority()) {
                     swap(_items.get(child1), item);
                     bubbleDown(item);
@@ -78,8 +80,8 @@ public class PriorityQueue {
     }
 
     public PriorityItem dequeue() {
-        swap(_items.get(0), _items.get(_items.size()));
-        PriorityItem item = _items.remove(_items.size());
+        swap(_items.get(0), _items.get(_items.size()-1));
+        PriorityItem item = _items.remove(_items.size()-1);
         bubbleDown(_items.get(0));
         return item;
     }
