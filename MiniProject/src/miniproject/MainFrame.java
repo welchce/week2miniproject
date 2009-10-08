@@ -43,19 +43,41 @@ public class MainFrame extends JFrame {
         _executeButton.requestFocus();
     }
 
+    private char[] getRandomChars(){
+        Random Randy = new Random(System.currentTimeMillis());
+        char[] randomCharacters = new char[5];
+        for(int iStr=0; iStr<5;iStr++){
+            randomCharacters[iStr] = (char)((Math.abs(Randy.nextInt())%25) +97);
+        }
+        return randomCharacters;
+    }
+
+    private void addText(String St) {
+        _executeLog.setText(_executeLog.getText() + "\n" + St);
+    }
     private void executePriorityQueue() {
         Random Randy = new Random(System.currentTimeMillis());
         for(int i =0;i<20;i++) {
-            char[] randomCharacters = new char[5];
-            for(int iStr=0; iStr<5;iStr++){
-                randomCharacters[iStr] = (char)((Math.abs(Randy.nextInt())%25) +97);
-            }
-            _PQueue.enqueue(new PriorityItem(randomCharacters,Math.abs(Randy.nextInt())%50));
+            _PQueue.enqueue(new PriorityItem(getRandomChars(),Math.abs(Randy.nextInt())%50));
         }
         //_PQueue.printList();
         PriorityItem executedItem = _PQueue.dequeue();
-        _executeLog.setText("Item Executed: " + String.valueOf(executedItem.getItem()) +
+        addText("Item Executed: " + String.valueOf(executedItem.getItem()) +
                             "\nPriority: " + String.valueOf(executedItem.getPriority()));
+        int probPart2 = Math.abs(Randy.nextInt())%10;
+        if(probPart2>=0 && probPart2<=4) {
+            PriorityItem RandomlyGeneratedItem = new PriorityItem(getRandomChars(),(executedItem.getPriority()+executedItem.getPriority()*3));
+            _PQueue.enqueue(RandomlyGeneratedItem);
+            addText("Item Added: " + String.valueOf(RandomlyGeneratedItem.getItem()) +
+                            "\nPriority: " + String.valueOf(RandomlyGeneratedItem.getPriority()));
+        } else if (probPart2 >= 5 && probPart2 <= 7) {
+            PriorityItem RandomlyGeneratedItem = new PriorityItem(getRandomChars(),(executedItem.getPriority()+executedItem.getPriority()*10));
+            _PQueue.enqueue(RandomlyGeneratedItem);
+            addText("Item Added: " + String.valueOf(RandomlyGeneratedItem.getItem()) +
+                            "\nPriority: " + String.valueOf(RandomlyGeneratedItem.getPriority()));
+        } else {
+            addText("No random event was generated.");
+        }
     }
 
     private void addActions() {
