@@ -69,6 +69,8 @@ public class PriorityQueue {
         }
     }
 
+    public boolean isEmpty() { return _items.isEmpty(); }
+
     private void swap(PriorityItem src, PriorityItem dest) {
         int temp = _items.indexOf(src);
         _items.set(_items.indexOf(dest), src);
@@ -76,9 +78,10 @@ public class PriorityQueue {
     }
 
     public PriorityItem dequeue() {
+
         swap(_items.get(0), _items.get(_items.size()-1));
         PriorityItem item = _items.remove(_items.size()-1);
-        bubbleDown(_items.get(0));
+        if (!isEmpty()) bubbleDown(_items.get(0));
         return item;
     }
 }
