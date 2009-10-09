@@ -34,6 +34,7 @@ public class MainFrame extends JFrame {
     JTextArea _executeLog;
     JPanel _questionPanel;
     int _prevPriority=0;
+
     public MainFrame() {
         this.setTitle(WINDOW_TITLE);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -84,7 +85,8 @@ public class MainFrame extends JFrame {
         _executeNext.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                executePriorityItem();
+                if (!_PQueue.isEmpty()) executePriorityItem();
+                else { stopExecution(); }
             }
         });
     }
@@ -120,11 +122,11 @@ public class MainFrame extends JFrame {
 
     private char[] genRandomChars() {
         Random Randy = new Random(System.currentTimeMillis());
-        char[] randomCharacters = new char[5];
+        char[] randomChars = new char[5];
         for(int iStr=0; iStr<5;iStr++){
-            randomCharacters[iStr] = (char)((Math.abs(Randy.nextInt())%25) +97);
+            randomChars[iStr] = (char)(Randy.nextInt(25)+97);
         }
-        return randomCharacters;
+        return randomChars;
     }
 
     private void printPriorityItem(String step, PriorityItem pItem) {
@@ -141,7 +143,7 @@ public class MainFrame extends JFrame {
                        "\nItem: " +item +
                        "\nPriority: " + priority +
                        "\nTotal Items: " + _PQueue.getSize() + "\n";
-        _executeLog.setText(_executeLog.getText()+newText);
+            _executeLog.setText(_executeLog.getText()+newText);
     }
 
     private void startExecution() {
@@ -152,7 +154,7 @@ public class MainFrame extends JFrame {
         _PQueue = new PriorityQueue();
         Random Randy = new Random(System.currentTimeMillis());
         for(int i =0;i<20;i++) {
-            int randPriority = Math.abs(Randy.nextInt())%50;
+            int randPriority = Randy.nextInt(50);
             _PQueue.enqueue(new PriorityItem(genRandomChars(),randPriority));
         }
     }
@@ -166,33 +168,29 @@ public class MainFrame extends JFrame {
     }
 
     private void executePriorityItem() {
-        if (!_PQueue.isEmpty()) {
-            _executeLog.setText(_executeLog.getText()+"-----------------------");
-            Random Randy = new Random(System.currentTimeMillis());
-            PriorityItem executedItem = _PQueue.dequeue();
-            _prevPriority = executedItem.getPriority();
-            printPriorityItem("Execute Item", executedItem);
-            int probPart2 = Math.abs(Randy.nextInt())%10;
-            if (probPart2 <= 7) {
-                int newPriority;
-                String step;
-                if(probPart2>=0 && probPart2<=4) {
-                    newPriority = executedItem.getPriority()+executedItem.getPriority()*3;
-                    step = "Enqueue Item a";
-                } else {
-                    newPriority = executedItem.getPriority()+executedItem.getPriority()*10;
-                    step = "Enqueue Item b";
-                }
-                if (newPriority > 200) newPriority = 200;
-                PriorityItem RandomlyGeneratedItem = new PriorityItem(genRandomChars(),newPriority);
-                _PQueue.enqueue(RandomlyGeneratedItem);
-                printPriorityItem(step, RandomlyGeneratedItem);
+        _executeLog.setText(_executeLog.getText()+"-----------------------");
+        Random Randy = new Random(System.currentTimeMillis());
+        PriorityItem executedItem = _PQueue.dequeue();
+        _prevPriority = executedItem.getPriority();
+        printPriorityItem("Execute Item", executedItem);
+        int probPart2 = Math.abs(Randy.nextInt())%10;
+        if (probPart2 <= 7) {
+            int newPriority;
+            String step;
+            if(probPart2>=0 && probPart2<=4) {
+                newPriority = executedItem.getPriority()+executedItem.getPriority()*3;
+                step = "Enqueue Item a";
+            } else {
+                newPriority = executedItem.getPriority()+executedItem.getPriority()*10;
+                step = "Enqueue Item b";
             }
-            else {
-                printPriorityItem("none", null);
-            }
-        } else {
-            stopExecution();
+            if (newPriority > 200) newPriority = 200;
+            PriorityItem randItem = new PriorityItem(genRandomChars(),newPriority);
+            _PQueue.enqueue(randItem);
+            printPriorityItem(step, randItem);
+        }
+        else {
+            printPriorityItem("none", null);
         }
     }
 
