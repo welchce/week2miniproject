@@ -70,8 +70,8 @@ public class MainFrame extends JFrame {
                     while (name.length > 5)
                         name = JOptionPane.showInputDialog("What is the event name (can only be 5 characters)?").toCharArray();
                     int priority = -1;
-                    while (priority < _prevPriority)
-                        priority = Integer.valueOf(JOptionPane.showInputDialog("Priority( >= " + _prevPriority + ")", _prevPriority));
+                    while (priority < _prevPriority || priority > 200)
+                        priority = Integer.valueOf(JOptionPane.showInputDialog("Priority( >= " + _prevPriority + " and <= 200)", _prevPriority));
                     PriorityItem insertItem = new PriorityItem(name, priority);
                     _PQueue.enqueue(insertItem);
                     executePriorityItem();
@@ -137,10 +137,10 @@ public class MainFrame extends JFrame {
             item = "None";
             priority = "None";
         }
-            newText = "\nStep: " + step +
-                      "\nItem: " + item +
-                      "\nPriority: " + priority + "\n";
-        
+            newText =  "\nStep: " + step +
+                       "\nItem: " +item +
+                       "\nPriority: " + priority +
+                       "\nTotal Items: " + _PQueue.getSize() + "\n";
         _executeLog.setText(_executeLog.getText()+newText);
     }
 
@@ -170,6 +170,7 @@ public class MainFrame extends JFrame {
             _executeLog.setText(_executeLog.getText()+"-----------------------");
             Random Randy = new Random(System.currentTimeMillis());
             PriorityItem executedItem = _PQueue.dequeue();
+            _prevPriority = executedItem.getPriority();
             printPriorityItem("Execute Item", executedItem);
             int probPart2 = Math.abs(Randy.nextInt())%10;
             if (probPart2 <= 7) {
@@ -184,14 +185,12 @@ public class MainFrame extends JFrame {
                 }
                 if (newPriority > 200) newPriority = 200;
                 PriorityItem RandomlyGeneratedItem = new PriorityItem(genRandomChars(),newPriority);
-                printPriorityItem(step, RandomlyGeneratedItem);
                 _PQueue.enqueue(RandomlyGeneratedItem);
+                printPriorityItem(step, RandomlyGeneratedItem);
             }
             else {
                 printPriorityItem("none", null);
             }
-
-            _prevPriority = executedItem.getPriority();
         } else {
             stopExecution();
         }
