@@ -37,7 +37,7 @@ public class PriorityQueue {
                     bubbleDown(item);
                 }
             } else if (_items.get(child2).getPriority() < item.getPriority()) {
-                    swap(_items.get(child1), item);
+                    swap(_items.get(child2), item);
                     bubbleDown(item);
                 }
         } else if (child1 < _items.size() && child1 >= 0) {
@@ -78,7 +78,6 @@ public class PriorityQueue {
     }
 
     public PriorityItem dequeue() {
-
         swap(_items.get(0), _items.get(_items.size()-1));
         PriorityItem item = _items.remove(_items.size()-1);
         if (!isEmpty()) bubbleDown(_items.get(0));
