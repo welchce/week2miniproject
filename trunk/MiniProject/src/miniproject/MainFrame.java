@@ -22,13 +22,14 @@ import javax.swing.JOptionPane;
 /**
  *
  * @author Christopher
+ * @author Raymond Cox <rj.cox101 at gmail.com>
  */
 public class MainFrame extends JFrame {
-    String WINDOW_TITLE = "Priority Queue";
-    final JButton _executeButton = new JButton("Execute");
-    final JButton _stopButton = new JButton("Stop");
+    final String WINDOW_TITLE = "Priority Queue";
+    final JButton _startButton = new JButton("Start");
+    final JButton _executeAllButton = new JButton("Execute All");
     final JButton _insertEvent = new JButton("Insert Event");
-    final JButton _continueExecution = new JButton("Continue Execution");
+    final JButton _executeNext = new JButton("Execute Next");
     PriorityQueue _PQueue;
     JTextArea _executeLog;
     JPanel _questionPanel;
@@ -41,22 +42,19 @@ public class MainFrame extends JFrame {
         this.addActions();
         this.pack();
         this.setLocationRelativeTo(null);
-        _executeButton.requestFocus();
+        _startButton.requestFocus();
     }
 
     private void addActions() {
-        _executeButton.addActionListener(new ActionListener() {
+        _startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                _stopButton.setEnabled(true);
-                _executeButton.setEnabled(false);
-                _executeLog.setText("");
-                createPriorityQueue();
+                startExecution();
                 executePriorityItem();
             }
         });
 
-        _stopButton.addActionListener(new ActionListener() {
+        _executeAllButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 while (!_PQueue.isEmpty()) executePriorityItem();
@@ -78,12 +76,12 @@ public class MainFrame extends JFrame {
                     _PQueue.enqueue(insertItem);
                     executePriorityItem();
                 } catch (java.lang.Exception e) {
-                    System.out.println("Pressed cancel");
+                    System.out.println("User pressed cancel");
                 }
             }
         });
 
-        _continueExecution.addActionListener(new ActionListener() {
+        _executeNext.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 executePriorityItem();
@@ -94,18 +92,18 @@ public class MainFrame extends JFrame {
     private void createGUI() {
         this.setLayout(new BorderLayout());
         JPanel executeStopButtons = new JPanel();
-        _stopButton.setEnabled(false);
-        executeStopButtons.add(_executeButton, BorderLayout.WEST);
-        executeStopButtons.add(_stopButton, BorderLayout.EAST);
+        _executeAllButton.setEnabled(false);
+        executeStopButtons.add(_startButton, BorderLayout.WEST);
+        executeStopButtons.add(_executeAllButton, BorderLayout.EAST);
         _questionPanel = new JPanel();
         _questionPanel.setLayout(new BorderLayout());
         JLabel execPaused = new JLabel("Would you like to " +
-                "insert an additional event or continue?", JLabel.CENTER);
+                "insert an additional event or execute the next event?", JLabel.CENTER);
         execPaused.setForeground(Color.RED);
         _questionPanel.add(execPaused, BorderLayout.NORTH);
         JPanel questionButtons = new JPanel();
         questionButtons.add(_insertEvent);
-        questionButtons.add(_continueExecution);
+        questionButtons.add(_executeNext);
         _questionPanel.add(questionButtons, BorderLayout.CENTER);
         _executeLog = new JTextArea();
         _executeLog.setEditable(false);
@@ -130,13 +128,27 @@ public class MainFrame extends JFrame {
     }
 
     private void printPriorityItem(String step, PriorityItem pItem) {
-        String newText = "Step: " + step +
-                         "\nItem: " + String.valueOf(pItem.getItem()) +
-                         "\nPriority: " + String.valueOf(pItem.getPriority()+"\n");
+        String newText, item, priority;
+        if (pItem != null) {
+            item = String.valueOf(pItem.getItem());
+            priority = String.valueOf(pItem.getPriority());
+        } else {
+            step = "None";
+            item = "None";
+            priority = "None";
+        }
+            newText = "\nStep: " + step +
+                      "\nItem: " + item +
+                      "\nPriority: " + priority + "\n";
+        
         _executeLog.setText(_executeLog.getText()+newText);
     }
 
-    private void createPriorityQueue() {
+    private void startExecution() {
+        _questionPanel.setVisible(true);
+        _executeAllButton.setEnabled(true);
+        _startButton.setEnabled(false);
+        _executeLog.setText("");
         _PQueue = new PriorityQueue();
         Random Randy = new Random(System.currentTimeMillis());
         for(int i =0;i<20;i++) {
@@ -146,28 +158,29 @@ public class MainFrame extends JFrame {
     }
 
     private void stopExecution() {
-        _stopButton.setEnabled(false);
-        _executeButton.setEnabled(true);
         _questionPanel.setVisible(false);
-        _executeLog.setText(_executeLog.getText()+"End of queue");
+        _executeAllButton.setEnabled(false);
+        _startButton.setEnabled(true);
+        _executeLog.setText(_executeLog.getText()+"-----------------------");
+        _executeLog.setText(_executeLog.getText()+"\nEnd Of Queue");
     }
 
     private void executePriorityItem() {
         if (!_PQueue.isEmpty()) {
-            _questionPanel.setVisible(false);
+            _executeLog.setText(_executeLog.getText()+"-----------------------");
             Random Randy = new Random(System.currentTimeMillis());
             PriorityItem executedItem = _PQueue.dequeue();
-            printPriorityItem("Executed item", executedItem);
+            printPriorityItem("Execute Item", executedItem);
             int probPart2 = Math.abs(Randy.nextInt())%10;
             if (probPart2 <= 7) {
                 int newPriority;
                 String step;
                 if(probPart2>=0 && probPart2<=4) {
                     newPriority = executedItem.getPriority()+executedItem.getPriority()*3;
-                    step = "a";
+                    step = "Enqueue Item a";
                 } else {
                     newPriority = executedItem.getPriority()+executedItem.getPriority()*10;
-                    step = "b";
+                    step = "Enqueue Item b";
                 }
                 if (newPriority > 200) newPriority = 200;
                 PriorityItem RandomlyGeneratedItem = new PriorityItem(genRandomChars(),newPriority);
@@ -175,11 +188,10 @@ public class MainFrame extends JFrame {
                 _PQueue.enqueue(RandomlyGeneratedItem);
             }
             else {
-                _executeLog.setText(_executeLog.getText()+"step: do nothing\n");
+                printPriorityItem("none", null);
             }
-            _executeLog.setText(_executeLog.getText()+"-----------------------\n");
+
             _prevPriority = executedItem.getPriority();
-            _questionPanel.setVisible(true);
         } else {
             stopExecution();
         }

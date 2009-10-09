@@ -21,7 +21,6 @@ public class Main {
             public void run() {
                 MainFrame mainFrame = new MainFrame();
                 mainFrame.setVisible(true);
-                PriorityQueue testQueue = new PriorityQueue();
             }
         });
     }
