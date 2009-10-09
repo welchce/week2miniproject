@@ -69,6 +69,8 @@ public class PriorityQueue {
         }
     }
 
+    public int getSize() { return _items.size(); }
+
     public boolean isEmpty() { return _items.isEmpty(); }
 
     private void swap(PriorityItem src, PriorityItem dest) {
