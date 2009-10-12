@@ -21,13 +21,6 @@ import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
 import javax.swing.JOptionPane;
 
-// Logging imports
-import java.io.FileWriter;
-import java.io.PrintWriter;
-import java.util.Calendar;
-import java.util.Date;
-import java.text.SimpleDateFormat;
-
 /**
  *
  * @author Christopher
@@ -43,7 +36,7 @@ public class MainFrame extends JFrame {
     JTextArea _executeLog;
     JPanel _questionPanel;
     int _prevPriority=0;
-    PrintWriter _logWriter=null;
+    Logger _logWriter=null;
     public static final String DATE_FORMAT_NOW = "MM-dd-yy HH.mm.ss";
 
     public MainFrame() {
@@ -160,19 +153,17 @@ public class MainFrame extends JFrame {
                        "\nPriority: " + priority +
                        "\nTotal Items: " + _PQueue.getSize() + "\n";
             _executeLog.setText(_executeLog.getText()+newText);
-            _logWriter.print(newText);
+            try {
+                _logWriter.write(newText);
+            } catch (java.io.IOException e) {
+                JOptionPane.showMessageDialog(this, "Unable to create file" + 
+                                              _logWriter.getFileName(),"Unable to create file",
+                                              JOptionPane.ERROR_MESSAGE);
+            }
     }
 
     private void startExecution() {
-        Date curTime = Calendar.getInstance().getTime();
-        String fileName = new SimpleDateFormat(DATE_FORMAT_NOW).format(curTime);
-        try {
-            FileWriter outFile = new FileWriter(fileName+".log");
-            _logWriter = new PrintWriter(outFile);
-        } catch (java.io.IOException e) {
-            JOptionPane.showMessageDialog(null, "Unable to create file" + fileName + ".log",
-                                          "Unable to create file",JOptionPane.ERROR_MESSAGE);
-        }
+        _logWriter = new Logger();
         _questionPanel.setVisible(true);
         _executeAllButton.setEnabled(true);
         _startButton.setEnabled(false);
@@ -186,7 +177,6 @@ public class MainFrame extends JFrame {
     }
 
     private void stopExecution() {
-        if (_logWriter != null) _logWriter.close();
         _questionPanel.setVisible(false);
         _executeAllButton.setEnabled(false);
         _startButton.setEnabled(true);
