@@ -4,20 +4,29 @@
  */
 
 package miniproject;
+import java.util.Random;
+
+// GUI imports
 import java.awt.event.ActionEvent;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Color;
+import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JTextArea;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Color;
-import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
-import java.util.Random;
 import javax.swing.JScrollPane;
 import javax.swing.JOptionPane;
+
+// Logging imports
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.util.Calendar;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 
 /**
  *
@@ -34,16 +43,23 @@ public class MainFrame extends JFrame {
     JTextArea _executeLog;
     JPanel _questionPanel;
     int _prevPriority=0;
+    PrintWriter _logWriter=null;
+    public static final String DATE_FORMAT_NOW = "MM-dd-yy HH.mm.ss";
 
     public MainFrame() {
         this.setTitle(WINDOW_TITLE);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setResizable(true);
         this.createGUI();
         this.addActions();
         this.pack();
         this.setLocationRelativeTo(null);
         _startButton.requestFocus();
+    }
+    @Override
+    public void dispose() {
+        stopExecution();
+        System.exit(0);
     }
 
     private void addActions() {
@@ -144,9 +160,19 @@ public class MainFrame extends JFrame {
                        "\nPriority: " + priority +
                        "\nTotal Items: " + _PQueue.getSize() + "\n";
             _executeLog.setText(_executeLog.getText()+newText);
+            _logWriter.print(newText);
     }
 
     private void startExecution() {
+        Date curTime = Calendar.getInstance().getTime();
+        String fileName = new SimpleDateFormat(DATE_FORMAT_NOW).format(curTime);
+        try {
+            FileWriter outFile = new FileWriter(fileName+".log");
+            _logWriter = new PrintWriter(outFile);
+        } catch (java.io.IOException e) {
+            JOptionPane.showMessageDialog(null, "Unable to create file" + fileName + ".log",
+                                          "Unable to create file",JOptionPane.ERROR_MESSAGE);
+        }
         _questionPanel.setVisible(true);
         _executeAllButton.setEnabled(true);
         _startButton.setEnabled(false);
@@ -160,6 +186,7 @@ public class MainFrame extends JFrame {
     }
 
     private void stopExecution() {
+        if (_logWriter != null) _logWriter.close();
         _questionPanel.setVisible(false);
         _executeAllButton.setEnabled(false);
         _startButton.setEnabled(true);
