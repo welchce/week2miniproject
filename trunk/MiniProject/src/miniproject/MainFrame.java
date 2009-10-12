@@ -28,6 +28,7 @@ import javax.swing.JOptionPane;
  */
 public class MainFrame extends JFrame {
     final String WINDOW_TITLE = "Priority Queue";
+    final String NEW_LINE = System.getProperty("line.separator");
     final JButton _startButton = new JButton("Start");
     final JButton _executeAllButton = new JButton("Execute All");
     final JButton _insertEvent = new JButton("Insert Event");
@@ -37,7 +38,6 @@ public class MainFrame extends JFrame {
     JPanel _questionPanel;
     int _prevPriority=0;
     Logger _logWriter=null;
-    public static final String DATE_FORMAT_NOW = "MM-dd-yy HH.mm.ss";
 
     public MainFrame() {
         this.setTitle(WINDOW_TITLE);
@@ -148,10 +148,10 @@ public class MainFrame extends JFrame {
             item = "None";
             priority = "None";
         }
-            newText =  "\nStep: " + step +
-                       "\nItem: " +item +
-                       "\nPriority: " + priority +
-                       "\nTotal Items: " + _PQueue.getSize() + "\n";
+            newText =  NEW_LINE+"Step: " + step +
+                       NEW_LINE+"Item: " +item +
+                       NEW_LINE+"Priority: " + priority +
+                       NEW_LINE+"Total Items: " + _PQueue.getSize() + NEW_LINE;
             _executeLog.setText(_executeLog.getText()+newText);
             try {
                 _logWriter.write(newText);
