@@ -1,19 +1,12 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package miniproject;
 import javax.swing.SwingUtilities;
 
-/**
- *
- * @author Raymond Cox <rj.cox101 at gmail.com>
- */
 public class Main {
 
     /**
-     * @param args the command line arguments
+     * This is the main function of MiniProject.  The main function
+     * calls the GUI and runs the program.
      */
     public static void main(String[] args) {
 
