@@ -70,9 +70,8 @@ public class PriorityQueue {
     }
 
     public int getSize() { return _items.size(); }
-
     public boolean isEmpty() { return _items.isEmpty(); }
-
+    
     private void swap(PriorityItem src, PriorityItem dest) {
         int temp = _items.indexOf(src);
         _items.set(_items.indexOf(dest), src);
