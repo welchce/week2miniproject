@@ -220,6 +220,4 @@ public class MainFrame extends JFrame {
             printPriorityItem("none", null);
         }
     }
-
-
 }
