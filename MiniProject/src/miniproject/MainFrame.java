@@ -42,7 +42,14 @@ public class MainFrame extends JFrame {
     int _prevPriority=0;
     Logger _logWriter=null;
 
+
+    /**
+     * the default constructor for the MainFrame class.
+     * sets up the GUI interface for all of its intial actions.
+     */
+
     /* Intializes the window, and creates all gui elements */
+
     public MainFrame() {
         this.setTitle(WINDOW_TITLE);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -54,6 +61,9 @@ public class MainFrame extends JFrame {
         _startButton.requestFocus();
     }
 
+    /**
+     * closes the application gracefully.
+     */
     /* When the window is closed, this function is executed */
     @Override
     public void dispose() {
@@ -61,6 +71,10 @@ public class MainFrame extends JFrame {
         System.exit(0);
     }
 
+
+    /**
+     * adds the action listener events.
+     */
     /* Adds actions when various buttons are pressed.
      * Called in the constructor
      */
@@ -114,6 +128,10 @@ public class MainFrame extends JFrame {
         });
     }
 
+
+    /**
+     * sets up the basic GUI layout.
+     */
     /* Generates the GUI using border layout and adding all necessary components
      * to the frame. Called in the constructor
      */
@@ -146,6 +164,10 @@ public class MainFrame extends JFrame {
         _questionPanel.setVisible(false);
     }
 
+    /**
+     *
+     * @return an array of 5 random characters
+     */
     /* Generates 5 random characters, used when we need to create
      * random priority items
      */
@@ -158,6 +180,11 @@ public class MainFrame extends JFrame {
         return randomChars;
     }
 
+    /**
+     * prints out the Priority Item and what step it is.
+     * @param step the current step that we are on.
+     * @param pItem the priority Item that is being executed.
+     */
     /* Displays the priority item and step on the log textbox and prints it out
      * to the log file
      */
@@ -185,6 +212,9 @@ public class MainFrame extends JFrame {
         }
     }
 
+    /**
+     * begins the execution of the Priority Queue
+     */
     /*
      *
      */
@@ -202,6 +232,9 @@ public class MainFrame extends JFrame {
         }
     }
 
+    /**
+     * stops the execution of the Priority Queue.
+     */
     private void stopExecution() {
         _questionPanel.setVisible(false);
         _executeAllButton.setEnabled(false);
@@ -210,6 +243,9 @@ public class MainFrame extends JFrame {
         _executeLog.setText(_executeLog.getText()+"\nEnd Of Queue");
     }
 
+    /**
+     * executes the Priority Item on top of the Priority Queue.
+     */
     private void executePriorityItem() {
         _executeLog.setText(_executeLog.getText()+"-----------------------");
         Random Randy = new Random(System.currentTimeMillis());
