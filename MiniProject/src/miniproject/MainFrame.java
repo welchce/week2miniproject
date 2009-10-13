@@ -172,7 +172,7 @@ public class MainFrame extends JFrame {
      * random priority items
      */
     private char[] genRandomChars() {
-        Random Randy = new Random(System.currentTimeMillis());
+        Random Randy = new Random();
         char[] randomChars = new char[5];
         for(int iStr=0; iStr<5;iStr++){
             randomChars[iStr] = (char)(Randy.nextInt(25)+97);
@@ -222,7 +222,7 @@ public class MainFrame extends JFrame {
         _startButton.setEnabled(false);
         _executeLog.setText("");
         _PQueue = new PriorityQueue();
-        Random Randy = new Random(System.currentTimeMillis());
+        Random Randy = new Random();
         for(int i =0;i<20;i++) {
             int randPriority = Randy.nextInt(50);
             _PQueue.enqueue(new PriorityItem(genRandomChars(),randPriority));
@@ -245,7 +245,7 @@ public class MainFrame extends JFrame {
      */
     private void executePriorityItem() {
         _executeLog.setText(_executeLog.getText()+"-----------------------");
-        Random Randy = new Random(System.currentTimeMillis());
+        Random Randy = new Random();
         PriorityItem executedItem = _PQueue.dequeue();
         _prevPriority = executedItem.getPriority();
         printPriorityItem("Execute Item", executedItem);
