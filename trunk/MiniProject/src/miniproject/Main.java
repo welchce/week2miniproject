@@ -5,6 +5,8 @@ import javax.swing.SwingUtilities;
 public class Main {
 
     /**
+     * @author Raymond Cox <rj.cox101 at gmail.com>
+     *
      * This is the main function of MiniProject.  The main function
      * calls the GUI and runs the program.
      */

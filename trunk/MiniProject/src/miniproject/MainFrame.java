@@ -23,22 +23,26 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author Christopher
+ * @author Christopher Welch
+ * @author Kurt Stauffer
  * @author Raymond Cox <rj.cox101 at gmail.com>
+ *
+ * This is the main GUI window in our project
  */
 public class MainFrame extends JFrame {
     final String WINDOW_TITLE = "Priority Queue";
     final String NEW_LINE = System.getProperty("line.separator");
     final JButton _startButton = new JButton("Start");
     final JButton _executeAllButton = new JButton("Execute All");
-    final JButton _insertEvent = new JButton("Insert Event");
-    final JButton _executeNext = new JButton("Execute Next");
+    final JButton _insertEventButton = new JButton("Insert Event");
+    final JButton _executeNextButton = new JButton("Execute Next");
     PriorityQueue _PQueue;
     JTextArea _executeLog;
     JPanel _questionPanel;
     int _prevPriority=0;
     Logger _logWriter=null;
 
+    /* Intializes the window, and creates all gui elements */
     public MainFrame() {
         this.setTitle(WINDOW_TITLE);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -49,13 +53,20 @@ public class MainFrame extends JFrame {
         this.setLocationRelativeTo(null);
         _startButton.requestFocus();
     }
+
+    /* When the window is closed, this function is executed */
     @Override
     public void dispose() {
         stopExecution();
         System.exit(0);
     }
 
+    /* Adds actions when various buttons are pressed.
+     * Called in the constructor
+     */
     private void addActions() {
+
+        // When the start button is pressed...
         _startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -64,6 +75,7 @@ public class MainFrame extends JFrame {
             }
         });
 
+        // When the execute all button is pressed...
         _executeAllButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -72,7 +84,8 @@ public class MainFrame extends JFrame {
             }
         });
 
-        _insertEvent.addActionListener(new ActionListener() {
+        // When the insert event button is pressed...
+        _insertEventButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 char name[] = new char[6];
@@ -91,7 +104,8 @@ public class MainFrame extends JFrame {
             }
         });
 
-        _executeNext.addActionListener(new ActionListener() {
+        // When the execute next button is pressed...
+        _executeNextButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (!_PQueue.isEmpty()) executePriorityItem();
@@ -100,6 +114,9 @@ public class MainFrame extends JFrame {
         });
     }
 
+    /* Generates the GUI using border layout and adding all necessary components
+     * to the frame. Called in the constructor
+     */
     private void createGUI() {
         this.setLayout(new BorderLayout());
         JPanel executeStopButtons = new JPanel();
@@ -113,8 +130,8 @@ public class MainFrame extends JFrame {
         execPaused.setForeground(Color.RED);
         _questionPanel.add(execPaused, BorderLayout.NORTH);
         JPanel questionButtons = new JPanel();
-        questionButtons.add(_insertEvent);
-        questionButtons.add(_executeNext);
+        questionButtons.add(_insertEventButton);
+        questionButtons.add(_executeNextButton);
         _questionPanel.add(questionButtons, BorderLayout.CENTER);
         _executeLog = new JTextArea();
         _executeLog.setEditable(false);
@@ -129,6 +146,9 @@ public class MainFrame extends JFrame {
         _questionPanel.setVisible(false);
     }
 
+    /* Generates 5 random characters, used when we need to create
+     * random priority items
+     */
     private char[] genRandomChars() {
         Random Randy = new Random(System.currentTimeMillis());
         char[] randomChars = new char[5];
@@ -138,6 +158,9 @@ public class MainFrame extends JFrame {
         return randomChars;
     }
 
+    /* Displays the priority item and step on the log textbox and prints it out
+     * to the log file
+     */
     private void printPriorityItem(String step, PriorityItem pItem) {
         String newText, item, priority;
         if (pItem != null) {
@@ -148,20 +171,23 @@ public class MainFrame extends JFrame {
             item = "None";
             priority = "None";
         }
-            newText =  NEW_LINE+"Step: " + step +
-                       NEW_LINE+"Item: " +item +
-                       NEW_LINE+"Priority: " + priority +
-                       NEW_LINE+"Total Items: " + _PQueue.getSize() + NEW_LINE;
-            _executeLog.setText(_executeLog.getText()+newText);
-            try {
-                _logWriter.write(newText);
-            } catch (java.io.IOException e) {
-                JOptionPane.showMessageDialog(this, "Unable to create file" + 
-                                              _logWriter.getFileName(),"Unable to create file",
-                                              JOptionPane.ERROR_MESSAGE);
-            }
+        newText =  NEW_LINE+"Step: " + step +
+                   NEW_LINE+"Item: " +item +
+                   NEW_LINE+"Priority: " + priority +
+                   NEW_LINE+"Total Items: " + _PQueue.getSize() + NEW_LINE;
+        _executeLog.setText(_executeLog.getText()+newText);
+        try {
+            _logWriter.write(newText);
+        } catch (java.io.IOException e) {
+            JOptionPane.showMessageDialog(this, "Unable to create file" +
+                                          _logWriter.getFileName(),"Unable to create file",
+                                          JOptionPane.ERROR_MESSAGE);
+        }
     }
 
+    /*
+     *
+     */
     private void startExecution() {
         _logWriter = new Logger();
         _questionPanel.setVisible(true);

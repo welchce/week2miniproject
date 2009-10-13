@@ -3,38 +3,23 @@ package miniproject;
 import java.util.ArrayList;
 
 /**
- * The Priority Queue class is an array organized into a binary tree.  It has
+ * @author Raymond Cox <rj.cox101 at gmail.com>
+ * @author Ryan Cummins
+ *
+ * The Priority Queue class is an array organized into a heap.  It has
  * items in the array that have a character array and a priority value.
  */
 public class PriorityQueue {
     ArrayList<PriorityItem> _items = new ArrayList();
 
     /**
-     * Creates a new PriorityQueue.
-     */
-    public PriorityQueue() { }
-
-    /**
      * The enqueue function takes a given PriorityItem item and places it in
      * the last position in the array and then bubbles the item up the Priority
      * Queue until it has reached the proper position.
-     * Inputs:
-     * 1. A PriorityItem item.
      */
     public void enqueue(PriorityItem item) {
         _items.add(item);
         bubbleUp(item);
-    }
-
-    /**
-     * The printList function prints out the character array and priority of
-     * every PriorityItem in the Priority Queue.
-     */
-    public void printList() {
-        for (PriorityItem item : _items) {
-            System.out.println("Item:" + String.valueOf(item.getItem()) + " Priority: " +
-                                String.valueOf(item.getPriority()));
-        }
     }
 
     /**
@@ -112,9 +97,8 @@ public class PriorityQueue {
     }
 
     /**
-     * The dequeue function starts at the beginning of the PriorityQueue array
-     * and removes each item and reorganizes the array until the Priority Queue
-     * is empty.
+     * The dequeue function removes and returns the item on the bottom of the
+     * queue and then updates the queue.
      */
     public PriorityItem dequeue() {
         swap(_items.get(0), _items.get(_items.size()-1));

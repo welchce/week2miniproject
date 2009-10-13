@@ -8,6 +8,7 @@ package miniproject;
 /**
  *
  * @author Raymond Cox <rj.cox101 at gmail.com>
+ * @author Ryan Cummins
  */
 public class PriorityItem {
     static final int MAX_PRIORITY = 200;
