@@ -215,9 +215,6 @@ public class MainFrame extends JFrame {
     /**
      * begins the execution of the Priority Queue
      */
-    /*
-     *
-     */
     private void startExecution() {
         _logWriter = new Logger();
         _questionPanel.setVisible(true);
